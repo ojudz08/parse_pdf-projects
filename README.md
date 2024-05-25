@@ -34,8 +34,8 @@
 </tr>
 <tr>
    <td>Parse PDF 2</td>
-   <td>[Update]</td>
-   <td><a class="externalLink" href="https://github.com/ojudz08/parse_pdf-projects/tree/main/parsePDFs02">link</a></td>
+   <td>[To update]</td>
+   <td><a class="externalLink" href="">link</a></td>
 </tr>
 </table>
 
