@@ -15,11 +15,16 @@ This is a project where it:
 1. Merge all the pdf pages
 2. Merge only the 1st pdf page
 
-Raw Data Source is a pdf file type and Output Result is save as a pdf file type as well.
+File to merge is a pdf. Once pdf_merger.exe file is created, ynou can run it to open the file to merge. Merged pdf file is save as a pdf.
 
-### What are the pre-requisites?
+### Requirements
 
-Run the command below in following order. Or you may simply run the run.bat which also contains the commands below.
+This project was created and tested in an isolated conda venv within VsCode. To create the conda venv, go to this link for instructions [Python environments in VS Code](https://code.visualstudio.com/docs/python/environments)
+
+   ```Python version 3.11.9```
+
+
+Run each command below to install the necessary packages and create the executable file **pdf_merger.exe**. OR simply run the **run.bat** within the VsCode's terminal which also contains the commands to run.
 
 ```Python
 python -m pip install -r requirements.txt
