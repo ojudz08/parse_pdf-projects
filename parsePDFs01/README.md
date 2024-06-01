@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h1 align="center">PDF Parser</h1>
+<h1 align="center">Goldman Sachs Weekly Report PDF Parser</h1>
 </div>
 
 
@@ -19,7 +19,8 @@ This is a simple pdf parser where it:
    - Currencies
 2. Save each asset type into a separate sheet
 
-### What are the requirements?
+### Requirements
+
 1. Download jdk 8 from the archive downloads (this [link](https://www.oracle.com/in/java/technologies/javase/javase8-archive-downloads.html) )
 2. Install the jdk 8.
 3. Set your JAVA_HOME to the path where your jdk 8 is installed. 
@@ -40,11 +41,26 @@ This is a simple pdf parser where it:
 
 ### What are the pre-requisites?
 
-Run the command below in following order. Or you may simply run the run.bat which also contains the commands below.
+```Python version 3.11.9```
 
-```Python
+Run the command below in following order. 
+
+```bat
 python -m pip install -r requirements.txt
-pyinstaller main.py --clean --onefile --name pdf_parser
+pyinstaller main.py --clean --onefile --name pdf_parser -y
+python scripts/file_transfer.py
+```
+
+Or you may simply run the run.bat which also contains the commands below.
+
+```bat
+@echo off
+echo Install requirements...
+python -m pip install -r requirements.txt
+
+echo Create pdf_parser.exe...
+pyinstaller main.py --clean --onefile --name pdf_parser -y
+
 python scripts/file_transfer.py
 ```
 
@@ -58,7 +74,7 @@ python scripts/file_transfer.py
 
 3. Create an executable file pdf_parser.exe from the main.py
    ```Python
-   pyinstaller main.py --clean --onefile --name pdf_parser
+   pyinstaller main.py --clean --onefile --name pdf_parser -y
    ```
 
 4. Move the created executable file in the current directory.

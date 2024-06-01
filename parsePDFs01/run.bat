@@ -1,3 +1,8 @@
+@echo off
+echo Install requirements...
 python -m pip install -r requirements.txt
-pyinstaller main.py --clean --onefile --name pdf_parser
+
+echo Create pdf_parser.exe...
+pyinstaller main.py --clean --onefile --name pdf_parser -y
+
 python scripts/file_transfer.py
