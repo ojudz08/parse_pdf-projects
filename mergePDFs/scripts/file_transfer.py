@@ -1,4 +1,4 @@
-import os
+import os, shutil
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..'))
 install_dir = os.path.join(parent_dir, "dist")
@@ -10,12 +10,11 @@ if os.path.exists(install_dir):
             exe_src = os.path.join(install_dir, exe_file)
             exe_dst = os.path.join(parent_dir, exe_file)
 
-            os.chmod(install_dir, 777)
-            os.chmod(parent_dir, 777)
             os.replace(exe_src, exe_dst)
 
+buildpath = os.path.join(parent_dir, "build")
+specfile = os.path.join(parent_dir, "pdf_merger.spec")
 
-# transfer spec to dist
-spec_src = os.path.join(parent_dir, "pdf_merger.spec")
-spec_dst = os.path.join(install_dir, "pdf_merger.spec") 
-os.replace(spec_src, spec_dst)
+shutil.rmtree(buildpath)
+shutil.rmtree(install_dir)
+os.remove(specfile)
