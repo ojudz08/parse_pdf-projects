@@ -11,7 +11,7 @@ if os.path.exists(install_dir):
             exe_dst = os.path.join(parent_dir, exe_file)
 
             os.replace(exe_src, exe_dst)
-
+    
 buildpath = os.path.join(parent_dir, "build")
 specfile = os.path.join(parent_dir, "pdf_merger.spec")
 
