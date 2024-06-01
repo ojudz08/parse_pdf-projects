@@ -24,11 +24,24 @@ This project was created and tested in an isolated conda venv within VsCode. To 
    ```Python version 3.11.9```
 
 
-Run each command below to install the necessary packages and create the executable file **pdf_merger.exe**. OR simply run the **run.bat** within the VsCode's terminal which also contains the commands to run.
+Run each command below to install the necessary packages and create the executable file **pdf_merger.exe**. 
 
-```Python
+```powershell
 python -m pip install -r requirements.txt
-pyinstaller main.py --clean --onefile --name pdf_merger
+pyinstaller main.py --clean --onefile --name pdf_merger -y
+python scripts/file_transfer.py
+```
+
+Or simply run the **run.bat** within the VsCode's terminal which also contains the commands to run.
+
+```bat
+@echo off
+echo Install requirements...
+python -m pip install -r requirements.txt
+
+echo Create pdf_merger.exe...
+pyinstaller main.py --clean --onefile --name pdf_merger -y
+
 python scripts/file_transfer.py
 ```
 
@@ -37,17 +50,17 @@ python scripts/file_transfer.py
 1. Save your reports within __*reports*__ folder.
 
 2. This will install all the necessary python libraries used.
-   ```Python
+   ```powershell
    python -m pip install -r requirements.txt
    ```
 
 3. Create an executable file pdf_merger.exe from the main.py
-   ```Python
-   pyinstaller main.py --clean --onefile --name pdf_merger
+   ```powershell
+   pyinstaller main.py --clean --onefile --name pdf_merger -y
    ```
 
 4. Move the created executable file in the current directory.
-   ```Python
+   ```powershell
    python scripts/file_transfer.py
    ```
 
