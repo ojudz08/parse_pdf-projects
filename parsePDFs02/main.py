@@ -8,8 +8,12 @@
 
 import os, sys
 from pypdf import PdfReader
-import tkinter as tk
 from tkinter.filedialog import *
+
+import pymupdf
+from pprint import pprint
+
+
 
 
 class pdfParse():
@@ -22,30 +26,52 @@ class pdfParse():
         filepath = open_file[0]   # read 1 file only
         return filepath
 
+
     def read_page(self):
         pdf_file = self.open_file()
         read_pdf = PdfReader(pdf_file)
-        page = read_pdf.pages[0].extract_text()
+        page = read_pdf.pages[0]
+        test = page.extract_text()   # resolved_objectts
 
-        return page
+
+        return test
     
-    def page_reader(self):
-        page = reader.pages[0]
-        #lay = page.extract_text(extraction_mode="layout", layout_mode_scale_weight=1.0)
-        return page
-    
-    def visitor_vody(text, cm, tm, font_dict, font_size):
-        parts = []
-        y = cm[5]
-        if y > 50 and y < 720:
-            parts.append(text)
+
+    def test_pymudpdf(self):
+        pdf_file = self.open_file()
+        pdf = pymupdf.open(pdf_file)
+
+        pg_cnt = pdf.page_count
         
-        pass
+        cnt = 0
+        for pg in range(0, 11):
+            page = pdf.load_page(pg)
 
+            extract_pg_txt = page.get_text()
+            search_pg = page.search_for("Common Stocks")
+            if search_pg: 
+                what_page = pg
+                break
+            
+
+            #bnd = page.bound()
+            #pdf.get_page_text(0) -- texts of page 1, same as pdf.load_page(0).get_text()
+            #pdf.load
+
+            #if page.search_for("Common Stocks"):  
+            #    search_pg = page.search_for("Common Stocks") # returns bounding box
+            #    result = [pg, search_pg]
+
+                
+        return what_page
+      
 
 
 
 if __name__ == '__main__':
-    test = pdfParse().read_page()
+    data = pdfParse().test_pymudpdf()
+    
 
-    print(test)
+
+    print(data)
+    
