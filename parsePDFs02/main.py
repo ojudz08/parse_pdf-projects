@@ -53,28 +53,33 @@ class pdfParse():
                 what_page = pg + 1
                 break
             
-            # create a dictionary
-            # key Natixis Sustainable Future 2025 Fund -- March 31, 2024, February 29, 2024 and January 31, 2024
-            # value - start to end page of each month end
-
-            #bnd = page.bound()
-            #pdf.get_page_text(0) -- texts of page 1, same as pdf.load_page(0).get_text()
-            #pdf.load
-
-            #if page.search_for("Common Stocks"):  
-            #    search_pg = page.search_for("Common Stocks") # returns bounding box
-            #    result = [pg, search_pg]
-
+            # from month_end_pages, search for Common Stocks and parse from there
                 
         return search_pg
+    
+    def month_end_pages(self):
+        pdf_file = self.open_file()
+        pdf = pymupdf.open(pdf_file)
+
+        month_end = ["January 31, 2024", "February 29, 2024", "March 31, 2024"]
+        month_pg = {}
+        pg_cnt = pdf.page_count     
+
+        for month in month_end:
+            month_page = []
+
+            for pg in range(0, pg_cnt):
+                if pdf.load_page(pg).search_for(month): month_page.append(pg)
+            
+            month_pg[month] = [min(month_page), max(month_page)]
+
+        return month_pg
       
 
 
 
 if __name__ == '__main__':
-    data = pdfParse().test_pymudpdf()
-    
-
+    data = pdfParse().month_end_pages()
 
     print(data)
     
