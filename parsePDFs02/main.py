@@ -50,9 +50,12 @@ class pdfParse():
             extract_pg_txt = page.get_text()
             search_pg = page.search_for("Common Stocks")
             if search_pg: 
-                what_page = pg
+                what_page = pg + 1
                 break
             
+            # create a dictionary
+            # key Natixis Sustainable Future 2025 Fund -- March 31, 2024, February 29, 2024 and January 31, 2024
+            # value - start to end page of each month end
 
             #bnd = page.bound()
             #pdf.get_page_text(0) -- texts of page 1, same as pdf.load_page(0).get_text()
@@ -63,7 +66,7 @@ class pdfParse():
             #    result = [pg, search_pg]
 
                 
-        return what_page
+        return search_pg
       
 
 
