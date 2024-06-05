@@ -60,7 +60,7 @@ class pdfParse():
         filepath = file_open
         doc = pymupdf.open(filepath)
 
-        search = "Common Stocks"
+        search =  "Common Stocks"
         pg_range = [0, 10]
         get_page_word = self.asset_rect(filepath, search, pg_range)
 
@@ -70,10 +70,20 @@ class pdfParse():
         cm_result = page.get_textbox(rect[0])
         
         # from the Common Stocks rect, parse the table from start to end
-        return cm_result
+        # page.rect, page.bound
+
+        return rect
     
 
     def bonds_and_notes(self):
+        filepath = file_open
+        doc = pymupdf.open(filepath)
+
+        search =  "Bonds and Notes"
+        pg_range = [0, 10]
+        get_page_word = self.asset_rect(filepath, search, pg_range)
+
+        pg, rect = get_page_word[0], get_page_word[1]
         pass
 
     def exchange_traded_funds(self):
