@@ -78,40 +78,76 @@ class pdfParse():
         return assets_pg
     
     
-    def common_stocks(self, search_asset, period_pg):
-        asset_pages = self.asset_pg(period_pg)
+    def concat_cols(self, rect_area, pg):
+        data, colrename = pd.DataFrame(), []
+        for key, value in rect_area.items():
+            df = self.read_area(pg, value)
+            data = pd.concat([data, df], axis=1, ignore_index=True)
+            colrename.append(key)
         
-        for key, val in asset_pages.items():
-            if key == search_asset: pgrng = val
+        return data, colrename
 
-        common_stocks_df = pd.DataFrame()
+
+    def common_stocks(self, page_range):
+        pgrng = page_range
+
+        df = pd.DataFrame()
         strt, end = pgrng[0] + 1, pgrng[1] + 2
         for pg in range(strt, end):
             if pg == 1: top, bot = 130, 725            
             elif pg > 1 and pg < end - 1: top, bot = 117, 725
             elif pg == end - 1: top, bot = 117, 220
 
-            rect_area = {"Shares": [top, 60, bot, 91], "Security Description": [top, 94, bot, 400], "Market Value ($)": [top, 420, bot, 487], f"% of Fund": [top, 490, bot, 540]}
+            rect_area = {"Shares": [top, 60, bot, 91],
+                         "Security Description": [top, 94, bot, 330],
+                         "Market Value ($)": [top, 425, bot, 487],
+                         f"% of Fund": [top, 490, bot, 540]}
 
-            data, colrename = pd.DataFrame(), []
-            for key, value in rect_area.items():
-                df = self.read_area(pg, value)
-                data = pd.concat([data, df], axis=1, ignore_index=True)
-                colrename.append(key)
-        
-            common_stocks_df = pd.concat([common_stocks_df, data], axis=0, ignore_index=True)
+            temp = self.concat_cols(rect_area, pg)
+            data, colrename = temp[0], temp[1]
+            df = pd.concat([df, data], axis=0, ignore_index=True)
 
-        common_stocks_df.columns = colrename
-        return common_stocks_df
+        df.columns = colrename
+        return df
     
+
+    def bonds_and_notes(self, page_range):
+        pgrng = page_range
+
+        df = pd.DataFrame()
+        strt, end = pgrng[0] + 1, pgrng[1] + 2
+        for pg in range(strt, end):
+            if pg == strt: top, bot = 250, 725       # add a function to derive top 250     
+            elif pg > strt and pg < end - 1: top, bot = 117, 725
+            elif pg == end - 1: top, bot = 117, 630  # add a function to derive bot 
+
+            rect_area = {"Principal Amount": [top, 60, bot, 91],
+                         "Security Description": [top, 94, bot, 330],
+                         "Interest Rate": [top, 332, bot, 370],
+                         "Maturity Date": [top, 373, bot, 420],
+                         "Market Value ($)": [top, 425, bot, 487],
+                         f"% of Fund": [top, 490, bot, 540]}
+            
+            temp = self.concat_cols(rect_area, pg)
+            data, colrename = temp[0], temp[1]
+            df = pd.concat([df, data], axis=0, ignore_index=True)
+
+        df.columns = colrename
+        return df
+
 
     def get_data(self):
         period = "March 31, 2024"
         period_pg = self.month_end_pages(period)
 
-        common_stocks_df = self.common_stocks("Common Stocks", period_pg)
+        asset_pages = self.asset_pg(period_pg)
+        for key, val in asset_pages.items():
+            if key == "Common Stocks":
+                asset1 = self.common_stocks(val)
+            elif key == "Bonds and Notes":
+                asset2 = self.bonds_and_notes(val)
 
-        return common_stocks_df
+        return asset2
 
 
 
