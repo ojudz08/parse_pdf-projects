@@ -10,8 +10,10 @@ import os, sys
 from pypdf import PdfReader
 from tkinter.filedialog import *
 
+import tabula
 import pymupdf
 from pprint import pprint
+import pandas as pd
 
 
 
@@ -55,27 +57,49 @@ class pdfParse():
         return search_page, search_word
 
 
+    def read_area(self, filepath, pg, rectarea):
+        df = tabula.read_pdf(filepath, pages=pg, area=[rectarea], pandas_options={'header': None}, output_format='dataframe', stream=True)[0]
+        return df
+
+
     def common_stocks(self):
         file_open = self.open_file()
         filepath = file_open
         doc = pymupdf.open(filepath)
 
         search =  "Common Stocks"
-        pg_range = [0, 10]
-        get_page_word = self.asset_rect(filepath, search, pg_range)
+        pgrng = [0, 10]
+        get_page_word = self.asset_rect(filepath, search, pgrng)
 
-        pg, rect = get_page_word[0], get_page_word[1]
+        pag, rect = get_page_word[0], get_page_word[1]
 
-        page = doc.load_page(pg)
+        page = doc.load_page(pag)
         cm_result = page.get_textbox(rect[0])
         
-        # from the Common Stocks rect, parse the table from start to end
-        # page.rect, page.bound
+        common_stocks_df = pd.DataFrame()
+        strt, end = pgrng[0] + 1, 9
+        for pg in range(strt, 9):
+            if pg == 1: top, bot = 130, 725            
+            elif pg > 1 and pg < 8: top, bot = 117, 725
+            elif pg == 8: top, bot = 117, 220
 
-        return rect
+            rect_area = {"Shares": [top, 60, bot, 91], "Security Description": [top, 94, bot, 400], "Market Value ($)": [top, 420, bot, 487], f"% of Fund": [top, 490, bot, 540]}
+
+            data, colrename = pd.DataFrame(), []
+            for key, value in rect_area.items():
+                df = self.read_area(filepath, pg, value)
+                data = pd.concat([data, df], axis=1, ignore_index=True)
+                colrename.append(key)
+        
+            common_stocks_df = pd.concat([common_stocks_df, data], axis=0, ignore_index=True)
+
+        common_stocks_df.columns = colrename
+
+        return common_stocks_df
     
 
     def bonds_and_notes(self):
+        file_open = self.open_file()
         filepath = file_open
         doc = pymupdf.open(filepath)
 
@@ -84,7 +108,8 @@ class pdfParse():
         get_page_word = self.asset_rect(filepath, search, pg_range)
 
         pg, rect = get_page_word[0], get_page_word[1]
-        pass
+
+        return pg, rect
 
     def exchange_traded_funds(self):
         pass
