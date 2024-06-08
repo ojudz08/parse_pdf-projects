@@ -88,20 +88,37 @@ class pdfParse():
         return data, colrename
 
 
-    def common_stocks(self, page_range):
+    def get_rect_area(self, asset, top, bot):
+
+        if asset in ('Common Stocks', 'Exchange-Traded Funds', 'Mutual Funds', 'Affiliated Mutual Funds'):
+            rect_area = {"Shares": [top, 60, bot, 91],
+                         "Security Description": [top, 94, bot, 330],
+                         "Market Value ($)": [top, 425, bot, 487],
+                         f"% of Fund": [top, 490, bot, 540]}
+
+        elif asset in ('Bonds and Notes', 'Short-Term Investments'):
+            rect_area = {"Principal Amount": [top, 60, bot, 91],
+                         "Security Description": [top, 94, bot, 330],
+                         "Interest Rate": [top, 332, bot, 370],
+                         "Maturity Date": [top, 373, bot, 420],
+                         "Market Value ($)": [top, 425, bot, 487],
+                         f"% of Fund": [top, 490, bot, 540]}
+
+        return rect_area
+    
+
+    def common_stocks(self, asset, page_range):
         pgrng = page_range
 
         df = pd.DataFrame()
         strt, end = pgrng[0] + 1, pgrng[1] + 2
+
         for pg in range(strt, end):
             if pg == 1: top, bot = 130, 725            
             elif pg > 1 and pg < end - 1: top, bot = 117, 725
             elif pg == end - 1: top, bot = 117, 220
 
-            rect_area = {"Shares": [top, 60, bot, 91],
-                         "Security Description": [top, 94, bot, 330],
-                         "Market Value ($)": [top, 425, bot, 487],
-                         f"% of Fund": [top, 490, bot, 540]}
+            rect_area = self.get_rect_area(asset, top, bot)
 
             temp = self.concat_cols(rect_area, pg)
             data, colrename = temp[0], temp[1]
@@ -111,22 +128,37 @@ class pdfParse():
         return df
     
 
-    def bonds_and_notes(self, page_range):
+    def bonds_and_notes(self, asset, page_range):
         pgrng = page_range
 
         df = pd.DataFrame()
         strt, end = pgrng[0] + 1, pgrng[1] + 2
+
         for pg in range(strt, end):
             if pg == strt: top, bot = 250, 725       # add a function to derive top 250     
             elif pg > strt and pg < end - 1: top, bot = 117, 725
             elif pg == end - 1: top, bot = 117, 630  # add a function to derive bot 
+            
+            rect_area = self.get_rect_area(asset, top, bot)
 
-            rect_area = {"Principal Amount": [top, 60, bot, 91],
-                         "Security Description": [top, 94, bot, 330],
-                         "Interest Rate": [top, 332, bot, 370],
-                         "Maturity Date": [top, 373, bot, 420],
-                         "Market Value ($)": [top, 425, bot, 487],
-                         f"% of Fund": [top, 490, bot, 540]}
+            temp = self.concat_cols(rect_area, pg)
+            data, colrename = temp[0], temp[1]
+            df = pd.concat([df, data], axis=0, ignore_index=True)
+
+        df.columns = colrename
+        return df
+
+
+    def exchange_traded_funds(self, asset, page_range):
+        pgrng = page_range
+
+        df = pd.DataFrame()
+        strt, end = pgrng[0] + 1, pgrng[1] + 2
+
+        for pg in range(strt, end):
+            if pg == strt: top, bot = 660, 725
+
+            rect_area = self.get_rect_area(asset, top, bot)
             
             temp = self.concat_cols(rect_area, pg)
             data, colrename = temp[0], temp[1]
@@ -136,6 +168,63 @@ class pdfParse():
         return df
 
 
+    def mutual_funds(self, asset, page_range):
+        pgrng = page_range
+
+        df = pd.DataFrame()
+        strt, end = pgrng[0] + 1, pgrng[1] + 2
+
+        for pg in range(strt, end):
+            if pg == strt: top, bot = 134, 185   # add function to derive both
+
+            rect_area = self.get_rect_area(asset, top, bot)
+            
+            temp = self.concat_cols(rect_area, pg)
+            data, colrename = temp[0], temp[1]
+            df = pd.concat([df, data], axis=0, ignore_index=True)
+
+        df.columns = colrename
+        return df
+    
+
+    def affiliated_mutual_funds(self, asset, page_range):
+        pgrng = page_range
+
+        df = pd.DataFrame()
+        strt, end = pgrng[0] + 1, pgrng[1] + 2
+
+        for pg in range(strt, end):
+            if pg == strt: top, bot = 199, 300   # add function to derive both
+
+            rect_area = self.get_rect_area(asset, top, bot)
+            
+            temp = self.concat_cols(rect_area, pg)
+            data, colrename = temp[0], temp[1]
+            df = pd.concat([df, data], axis=0, ignore_index=True)
+
+        df.columns = colrename
+        return df
+    
+
+    def short_term_investments(self, asset, page_range):
+        pgrng = page_range
+
+        df = pd.DataFrame()
+        strt, end = pgrng[0] + 1, pgrng[1] + 2
+
+        for pg in range(strt, end):
+            if pg == strt: top, bot = 322, 390   # add function to derive both
+
+            rect_area = self.get_rect_area(asset, top, bot)
+            
+            temp = self.concat_cols(rect_area, pg)
+            data, colrename = temp[0], temp[1]
+            df = pd.concat([df, data], axis=0, ignore_index=True)
+
+        df.columns = colrename
+        return df
+    
+
     def get_data(self):
         period = "March 31, 2024"
         period_pg = self.month_end_pages(period)
@@ -143,11 +232,19 @@ class pdfParse():
         asset_pages = self.asset_pg(period_pg)
         for key, val in asset_pages.items():
             if key == "Common Stocks":
-                asset1 = self.common_stocks(val)
+                asset1 = self.common_stocks(key, val)
             elif key == "Bonds and Notes":
-                asset2 = self.bonds_and_notes(val)
+                asset2 = self.bonds_and_notes(key, val)
+            elif key == "Exchange-Traded Funds":
+                asset3 = self.exchange_traded_funds(key, val)
+            elif key == "Mutual Funds":
+                asset4 = self.mutual_funds(key, val)
+            elif key == "Affiliated Mutual Funds":
+                asset5 = self.affiliated_mutual_funds(key, val)
+            elif key == "Short-Term Investments":
+                asset6 = self.short_term_investments(key, val)
 
-        return asset2
+        return asset6
 
 
 
