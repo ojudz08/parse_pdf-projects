@@ -104,22 +104,22 @@ python scripts/file_transfer.py
 ### What the output looks like
 
 #### - Common Stocks
-   <img src="img/image3.png" alt="drawing" width="600"/>
+   <img src="img/image3.png" alt="drawing" width="650"/>
 
 #### - Bonds and Notes
-   <img src="img/image4.png" alt="drawing" width="600"/>
+   <img src="img/image4.png" alt="drawing" width="650"/>
 
 #### - Exchange-Traded Funds
-   <img src="img/image5.png" alt="drawing" width="600"/>
+   <img src="img/image5.png" alt="drawing" width="650"/>
 
 #### - Mutual Funds
-   <img src="img/image6.png" alt="drawing" width="600"/>
+   <img src="img/image6.png" alt="drawing" width="650"/>
 
 #### - Affiliated Mutual Funds
-   <img src="img/image7.png" alt="drawing" width="600"/>
+   <img src="img/image7.png" alt="drawing" width="650"/>
 
 #### - Short-Term Investments
-   <img src="img/image8.png" alt="drawing" width="600"/>
+   <img src="img/image8.png" alt="drawing" width="650"/>
    
 
 
