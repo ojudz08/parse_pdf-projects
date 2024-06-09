@@ -2,17 +2,14 @@
     Author: Ojelle Rogero
     Created on: June 02, 2024
     About:
-        Converts the Weekly Market Recap section of GSAM Market Monitor
-        Parse each asset type and save as a data table in separate sheet
+        Parses the different assets in Natixis Sustainable Future Fund for the latest period
+        Save data table as an excel file in each separate sheet
 """
 
 import os, sys
-from pypdf import PdfReader
 from tkinter.filedialog import *
-
 import tabula
 import pymupdf
-from pprint import pprint
 import pandas as pd
 
 
@@ -20,10 +17,34 @@ import pandas as pd
 
 class pdfParse():
 
-    def __init__(self, filepath) -> None:
-        self.filepath = filepath
+    def __init__(self, period) -> None:
+        self.init_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+        tempfile = self.open_pdf(period)
+        self.filepath = tempfile
+        self.period = period
+
+
+    def save_as(self):
+        """Save the parsed pdf to desired target folder"""
+        file_types = [('Excel Files', '*.xlsx'), ('All Files', '*.*')]
+        outputfilename = os.path.basename(self.filepath)[:-4]
+        save_file_as = asksaveasfilename(initialdir = self.init_dir, initialfile = outputfilename, filetypes = file_types, defaultextension = '.xlsx', confirmoverwrite = True)
+        if save_file_as is None:
+            return None
+        else:
+            return save_file_as
+    
+
+    def open_pdf(self, period):
+        """Open file and returns filepath"""
+        open_file = askopenfilenames(initialdir = self.init_dir)
+        filepath = open_file[0]
+        return filepath
+
 
     def month_end_pages(self, period):
+        """Get page range from the specified period.
+           Returns the page range"""
         doc = pymupdf.open(self.filepath)
         pg_cnt = doc.page_count     
 
@@ -36,6 +57,8 @@ class pdfParse():
 
     
     def asset_rect(self, search, pgrng):
+        """Get the coordinates of the asset for a specified page range.
+           Returns the page where the asset is found and bounding box or rectangle"""
         doc = pymupdf.open(self.filepath)
 
         for i in range(pgrng[0], pgrng[1] + 1):
@@ -50,11 +73,16 @@ class pdfParse():
 
 
     def read_area(self, pg, rectarea):
-        df = tabula.read_pdf(self.filepath, pages=pg, area=[rectarea], pandas_options={'header': None}, output_format='dataframe', stream=True)[0]
+        """Parse the area of the specified bounding box.
+           Returns dataframe df"""
+        df = tabula.read_pdf(self.filepath, pages = pg, area = [rectarea], pandas_options = {'header': None}, output_format = 'dataframe', stream = True)[0]
         return df
     
 
     def asset_pg(self, period_pg):
+        """Get the pages for each asset for the specified period page range.
+           Returns a dictionary of the assets and page => {"Asset": [start, end]}
+        """
         assets = ["Common Stocks", "Bonds and Notes", "Exchange-Traded Funds", "Mutual Funds", "Affiliated Mutual Funds", "Short-Term Investments"]
 
         assets_pg = {}
@@ -79,6 +107,7 @@ class pdfParse():
     
     
     def concat_cols(self, rect_area, pg):
+        """Concatenates the asset column into one dataframe"""
         data, colrename = pd.DataFrame(), []
         for key, value in rect_area.items():
             df = self.read_area(pg, value)
@@ -89,6 +118,7 @@ class pdfParse():
 
 
     def get_rect_area(self, asset, top, bot):
+        """Rectange Area for each asset"""
 
         if asset in ('Common Stocks', 'Exchange-Traded Funds', 'Mutual Funds', 'Affiliated Mutual Funds'):
             rect_area = {"Shares": [top, 60, bot, 91],
@@ -108,6 +138,7 @@ class pdfParse():
     
 
     def common_stocks(self, asset, page_range):
+        """Parse Common Stocks"""
         pgrng = page_range
 
         df = pd.DataFrame()
@@ -129,6 +160,7 @@ class pdfParse():
     
 
     def bonds_and_notes(self, asset, page_range):
+        """Parse Bonds and Notes"""
         pgrng = page_range
 
         df = pd.DataFrame()
@@ -150,6 +182,7 @@ class pdfParse():
 
 
     def exchange_traded_funds(self, asset, page_range):
+        """Parse Exchange-Traded Funds"""
         pgrng = page_range
 
         df = pd.DataFrame()
@@ -169,6 +202,7 @@ class pdfParse():
 
 
     def mutual_funds(self, asset, page_range):
+        """Parse Mutual Funds"""
         pgrng = page_range
 
         df = pd.DataFrame()
@@ -188,6 +222,7 @@ class pdfParse():
     
 
     def affiliated_mutual_funds(self, asset, page_range):
+        """Parse Affiliated Mutual Funds"""
         pgrng = page_range
 
         df = pd.DataFrame()
@@ -207,6 +242,7 @@ class pdfParse():
     
 
     def short_term_investments(self, asset, page_range):
+        """Short Term Investments"""
         pgrng = page_range
 
         df = pd.DataFrame()
@@ -226,8 +262,8 @@ class pdfParse():
     
 
     def get_data(self):
-        period = "March 31, 2024"
-        period_pg = self.month_end_pages(period)
+        """Get the data for each asset and save into an excel file"""
+        period_pg = self.month_end_pages(self.period)
 
         asset_pages = self.asset_pg(period_pg)
         for key, val in asset_pages.items():
@@ -244,17 +280,25 @@ class pdfParse():
             elif key == "Short-Term Investments":
                 asset6 = self.short_term_investments(key, val)
 
-        return asset6
+        output_file = self.save_as()
+
+        with pd.ExcelWriter(output_file) as writer:
+            asset1.to_excel(writer, sheet_name="Common Stocks", index=False)
+            asset2.to_excel(writer, sheet_name="Bonds and Notes", index=False)
+            asset3.to_excel(writer, sheet_name="Exchange-Traded Funds", index=False)
+            asset4.to_excel(writer, sheet_name="Mutual Funds", index=False)
+            asset5.to_excel(writer, sheet_name="Affiliated Mutual Funds", index=False)
+            asset6.to_excel(writer, sheet_name="Short-Term Investments", index=False)
+            
+        return "Done!"
 
 
 
 
 if __name__ == '__main__':
     #month_end = ["January 31, 2024", "February 29, 2024", "March 31, 2024"]
-    init_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
-    open_file = askopenfilenames(initialdir = init_dir)
-    filepath = open_file[0]    
-     
-    data = pdfParse(filepath).get_data()
+    
+    period = "March 31, 2024"
+    data = pdfParse(period).get_data()
     print(data)
     
