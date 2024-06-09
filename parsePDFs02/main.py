@@ -35,7 +35,7 @@ class pdfParse():
             return save_file_as
     
 
-    def open_pdf(self, period):
+    def open_pdf(self):
         """Open file and returns filepath"""
         open_file = askopenfilenames(initialdir = self.init_dir)
         filepath = open_file[0]
