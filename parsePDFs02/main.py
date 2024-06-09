@@ -2,7 +2,7 @@
     Author: Ojelle Rogero
     Created on: June 02, 2024
     About:
-        Parses the different assets in Natixis Sustainable Future Fund
+        Parses the different assets in Natixis Sustainable Future Fund for the latest period
         Save data table as an excel file in each separate sheet
 """
 
