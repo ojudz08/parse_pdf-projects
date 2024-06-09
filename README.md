@@ -39,7 +39,7 @@
 </tr>
 <tr>
    <td>Split PDF</td>
-   <td>[To Update]</td>
+   <td>Split pdf into the specified pages</td>
    <td><a class="externalLink" href="https://github.com/ojudz08/parse_pdf-projects/tree/main/splitPDFs">link</a></td>
 </tr>
 </table>
