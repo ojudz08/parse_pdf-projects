@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-<h1 align="center">PDF Parser</h1>
+<h1 align="center">Natixis Sustainable Future Fund PDF Parser</h1>
 </div>
 
 
