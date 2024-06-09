@@ -35,12 +35,12 @@
 <tr>
    <td>Parse PDF 2</td>
    <td>Parse Natixis Sustainable Future Fund</td>
-   <td><a class="externalLink" href="https://github.com/ojudz08/parse_pdf-projects/tree/parse02/parsePDFs02">link</a></td>
+   <td><a class="externalLink" href="https://github.com/ojudz08/parse_pdf-projects/tree/main/parsePDFs02">link</a></td>
 </tr>
 <tr>
    <td>Split PDF</td>
    <td>[To Update]</td>
-   <td><a class="externalLink" href="https://github.com/ojudz08/parse_pdf-projects/tree/main/splitPDFs/reports">link</a></td>
+   <td><a class="externalLink" href="https://github.com/ojudz08/parse_pdf-projects/tree/main/splitPDFs">link</a></td>
 </tr>
 </table>
 
