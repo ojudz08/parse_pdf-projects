@@ -54,8 +54,9 @@ def bdo_es(es_dir):
                                  stream = True)[0]
             result = pd.concat([result, df], axis=0, ignore_index=True)
         
-        result = result.rename(columns={0: "Sale Date", 1: "Post Date", 2: "Transaction Details", 3: "Amount"})
-    return result
+        result = result.rename(columns={0: "Sale Date", 1: "Post Date", 2: "Transaction Details", 3: "Amount"}).drop(index=[0, 1]).reset_index()
+        result = result.drop('index', axis=1)
+        return result
 
 
 def transactions(bank):
