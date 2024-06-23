@@ -5,5 +5,8 @@ sys.path.insert(1, os.path.join(init_dir, "scripts"))
 
 import mycredentials, mysystemlib
 
-def config_cred():
-    return mysystemlib.get_creds(mycredentials.cred001)
+def config01():
+    return mysystemlib.get_creds(mycredentials.cred01)
+
+def config02():
+    return mysystemlib.get_creds(mycredentials.cred02)
