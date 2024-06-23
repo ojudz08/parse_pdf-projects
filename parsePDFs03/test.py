@@ -1,6 +1,6 @@
 import pymupdf, tabula
 import os, sys, time
-from config import config_cred
+from config import config01
 import pandas as pd
 from openpyxl import load_workbook
 
@@ -37,7 +37,7 @@ def bdo_es(es_dir):
         doc = pymupdf.open(file_path)
         pg_cnt = doc.page_count
         
-        if doc.authenticate(config_cred()[1]) != 6: break
+        if doc.authenticate(config01()[2]) != 6: break
         
         result = pd.DataFrame()
         for pg in range(0, pg_cnt):
@@ -46,7 +46,7 @@ def bdo_es(es_dir):
             if rect_area == None: continue
 
             df = tabula.read_pdf(file_path,
-                                 password = config_cred()[1],
+                                 password = config01()[2],
                                  pages = pg + 1,
                                  area = rect_area,
                                  pandas_options = {'header': None},
@@ -60,8 +60,8 @@ def bdo_es(es_dir):
 
 
 def transactions(bank):
-    if bank == config_cred()[0]:
-        es_dir = os.path.join(init_dir, "e-statements\BDO")
+    if bank == config01()[1]:
+        es_dir = os.path.join(init_dir, config01()[0], config01()[1])
         output = bdo_es(es_dir)
 
     for filename in os.listdir(es_dir):
