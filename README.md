@@ -38,6 +38,11 @@
    <td><a class="externalLink" href="https://github.com/ojudz08/parse_pdf-projects/tree/main/parsePDFs02">link</a></td>
 </tr>
 <tr>
+   <td>Parse PDF 3</td>
+   <td>Parse the transaction details of a banks statement</td>
+   <td><a class="externalLink" href="https://github.com/ojudz08/parse_pdf-projects/tree/main/parsePDFs03">link</a></td>
+</tr>
+<tr>
    <td>Split PDF</td>
    <td>Split pdf into the specified pages</td>
    <td><a class="externalLink" href="https://github.com/ojudz08/parse_pdf-projects/tree/main/splitPDFs">link</a></td>
