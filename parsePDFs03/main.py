@@ -34,7 +34,7 @@ class bank_estatement():
 
     def check(self, file_path, init_date):
         doc = pymupdf.open(file_path)
-        if doc.authenticate(config01()[2]) == 6:
+        if doc.authenticate(config01()[1]) == 6:
             doc_page = doc.load_page(0)
             rect_area = self.bound_box(doc_page)
             temp = self.period(doc_page, "Statement Date", rect_area[3])
@@ -95,7 +95,7 @@ class bank_estatement():
         doc = pymupdf.open(file_path)
         pg_cnt = doc.page_count
         
-        if doc.authenticate(config01()[2]) == 6:
+        if doc.authenticate(config01()[1]) == 6:
             temp = pd.DataFrame()
 
             for pg in range(0, pg_cnt):
@@ -108,7 +108,7 @@ class bank_estatement():
 
                 if rect_area == None: continue
 
-                df = tabula.read_pdf(file_path, password=config01()[2], pages=pg + 1, area=rect_area, pandas_options={'header': None}, output_format='dataframe', stream = True)[0]
+                df = tabula.read_pdf(file_path, password=config01()[1], pages=pg + 1, area=rect_area, pandas_options={'header': None}, output_format='dataframe', stream = True)[0]
                 temp = pd.concat([temp, df], axis=0, ignore_index=True)
         
         temp = temp.rename(columns={0: "Sale Date", 1: "Post Date", 2: "Transaction", 3: "Amount"})
@@ -122,7 +122,7 @@ class bank_estatement():
         temp1 = pd.read_excel(output_file, sheet_name='Summary', engine='openpyxl')
         init_dt = temp1["Statement Date"].dropna().values
 
-        if bank == config01()[1]:
+        if bank == config01()[0]:
             es_dir = os.path.realpath(self.open())
 
             for filename in os.listdir(es_dir):
