@@ -5,6 +5,7 @@
         Parses the transactions of a bank statement
 """
 
+from tkinter import filedialog
 import pymupdf, tabula
 import os, sys
 from config import config01
@@ -19,14 +20,28 @@ class bank_estatement():
         self.init_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
 
 
+    def open(self):
+        open_file = filedialog.askdirectory(initialdir=self.init_dir)
+        return open_file
+
+
     def save(self, out_path, df):
         temp = pd.read_excel(out_path, sheet_name='Summary', engine='openpyxl')
         last_row = len(temp) + 1
-        if df['Statement Date'][0] in temp['Statement Date'].values:
-            pass
-        else:
-            with pd.ExcelWriter(out_path, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
-                df.to_excel(writer, sheet_name='Summary', startrow=last_row, index=False, header=False)
+        with pd.ExcelWriter(out_path, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
+            df.to_excel(writer, sheet_name='Summary', startrow=last_row, index=False, header=False)
+
+
+    def check(self, file_path, init_date):
+        doc = pymupdf.open(file_path)
+        if doc.authenticate(config01()[2]) == 6:
+            doc_page = doc.load_page(0)
+            rect_area = self.bound_box(doc_page)
+            temp = self.period(doc_page, "Statement Date", rect_area[3])
+            if temp in init_date: 
+                return True
+            else: 
+                return False
 
 
     def bound_box(self, doc_page):
@@ -103,23 +118,33 @@ class bank_estatement():
 
 
     def transactions(self, bank):
+        output_file = os.path.join(self.init_dir, "Transactions.xlsx")
+        temp1 = pd.read_excel(output_file, sheet_name='Summary', engine='openpyxl')
+        init_dt = temp1["Statement Date"].dropna().values
+
         if bank == config01()[1]:
-            es_dir = os.path.join(config01()[0], config01()[1])
+            es_dir = os.path.realpath(self.open())
 
             for filename in os.listdir(es_dir):
                 if filename[-4:] == ".pdf":
                     file_path = os.path.join(es_dir, filename)
-                    output = self.bdo_es(file_path)
-                    output_file = os.path.join(self.init_dir, "Transactions.xlsx")
-                    result = self.save(output_file, output)
                     
-        return result
+                    if self.check(file_path, init_dt) == True: pass
+                    else:
+                        output = self.bdo_es(file_path)
+                        self.save(output_file, output)
 
+        temp2 = pd.read_excel(output_file, sheet_name='Summary', engine='openpyxl')
+        fin_dt = temp2["Statement Date"].dropna().values
+
+        if len(init_dt) < len(fin_dt) and init_dt in fin_dt:
+            return "New period added"
+        elif len(init_dt) == len(fin_dt) and len(set(init_dt).intersection(fin_dt)) == len(fin_dt):
+            return "No changes"
 
 
 if __name__ == '__main__':
     bnk = "BDO"
 
-    test = bank_estatement().transactions(bnk)    
-    print(test)
-    
+    result = bank_estatement().transactions(bnk)    
+    print(result)    
