@@ -19,6 +19,21 @@ This is a simple pdf parser where it:
    - Currencies
 2. Save each asset type into a separate sheet
 
+
+### What the report and output looks like
+
+This is the page 3 of the GSAM report which contains the Weekly Market Recap showing different assets.
+
+![alt text](img/image6.png)
+
+
+Once you've created the pdf_parser, it will iterate through all the tables, parses these tables and then save each table in separate worksheet.
+
+![alt text](img/image7.png)
+
+
+![alt text](img/image8.png)
+
 ### Requirements
 
 1. Download jdk 8 from the archive downloads (this [link](https://www.oracle.com/in/java/technologies/javase/javase8-archive-downloads.html) )
