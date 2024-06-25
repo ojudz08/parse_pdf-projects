@@ -20,6 +20,26 @@ Parses the first period of Natixis Sustainable Future Fund. Download the pdf fil
 - Affiliated Mutual Funds
 - Short-Term Investments
 
+
+### Composition of the Fund Report
+
+Common Stocks (pg 1 to 8)
+
+![alt text](img/image9.png)
+
+
+Bond and Shares (pg 8 to 10)
+
+Exchange-Traded Funds pg(10)
+
+![alt text](img/image10.png)
+
+Mutual Funds, Affiliated Mutual Funds and Short-Term Investments (pg 11)
+
+
+![alt text](img/image11.png)
+
+
 ### Requirements
 
 This needs to be configured for the tabula-py to work in your system.
