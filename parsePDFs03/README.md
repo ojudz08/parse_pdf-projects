@@ -54,6 +54,20 @@ Parses the transaction details table of a bank statement. It iterates to all pag
 </table>
 
 
+### What the output looks like
+
+Below is a sample bankk statement for February 2024 showing only the transaction details.
+
+   <img src="img/image1.png" alt="drawing" width="450"/>
+
+___
+
+Once you ran the sript, here's what the output looks like
+
+   <img src="img/image2.png" alt="drawing" width="450"/>
+
+___
+
 ### Requirements
 
 This needs to be configured for the tabula-py to work in your system.
@@ -76,6 +90,8 @@ This needs to be configured for the tabula-py to work in your system.
    JAVA_HOME\jre\lib\{tabula-jar-dependency}
    ```
 
+___
+
 ### What are the pre-requisites?
 
 ```Python version 3.11.9```
@@ -88,19 +104,6 @@ Run the command to install the libraries
 python -m pip install -r requirements.txt
 ```
 
-
-### Running the main.py script
-1. Simpy run the main.py.
-
-2. Below is a sample bankk statement for February 2024 showing only the transaction details.
-
-   <img src="img/image1.png" alt="drawing" width="450"/>
-   
-
-3. Once you ran the sript, here's what the output looks like
-
-   <img src="img/image2.png" alt="drawing" width="450"/>
- 
 
 
 <!-- CONTACT -->
