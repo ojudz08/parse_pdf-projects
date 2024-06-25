@@ -20,25 +20,50 @@ Parses the first period of Natixis Sustainable Future Fund. Download the pdf fil
 - Affiliated Mutual Funds
 - Short-Term Investments
 
+___
 
 ### Composition of the Fund Report
 
-Common Stocks (pg 1 to 8)
+#### - Common Stocks (pg 1 to 8)
 
-![alt text](img/image9.png)
-
-
-Bond and Shares (pg 8 to 10)
-
-Exchange-Traded Funds pg(10)
-
-![alt text](img/image10.png)
-
-Mutual Funds, Affiliated Mutual Funds and Short-Term Investments (pg 11)
+<img src="img/image9.png" alt="drawing" width="650"/>
 
 
-![alt text](img/image11.png)
+#### - Bond and Shares (pg 8 to 10)
+#### - Exchange-Traded Funds pg(10)
 
+<img src="img/image10.png" alt="drawing" width="650"/>
+
+
+#### - Mutual Funds, Affiliated Mutual Funds and Short-Term Investments (pg 11)
+
+<img src="img/image11.png" alt="drawing" width="650"/>
+
+
+___
+
+### What the output looks like
+
+#### - Common Stocks
+   <img src="img/image3.png" alt="drawing" width="800"/>
+
+#### - Bonds and Notes
+   <img src="img/image4.png" alt="drawing" width="650"/>
+
+#### - Exchange-Traded Funds
+   <img src="img/image5.png" alt="drawing" width="650"/>
+
+#### - Mutual Funds
+   <img src="img/image6.png" alt="drawing" width="650"/>
+
+#### - Affiliated Mutual Funds
+   <img src="img/image7.png" alt="drawing" width="650"/>
+
+#### - Short-Term Investments
+   <img src="img/image8.png" alt="drawing" width="650"/>
+
+
+___
 
 ### Requirements
 
@@ -119,28 +144,7 @@ python scripts/file_transfer.py
 4. Once parsing has been completed, it will prompt you to save the file.
 
    <img src="img/image2.png" alt="drawing" width="450"/>
-
-
-### What the output looks like
-
-#### - Common Stocks
-   <img src="img/image3.png" alt="drawing" width="650"/>
-
-#### - Bonds and Notes
-   <img src="img/image4.png" alt="drawing" width="650"/>
-
-#### - Exchange-Traded Funds
-   <img src="img/image5.png" alt="drawing" width="650"/>
-
-#### - Mutual Funds
-   <img src="img/image6.png" alt="drawing" width="650"/>
-
-#### - Affiliated Mutual Funds
-   <img src="img/image7.png" alt="drawing" width="650"/>
-
-#### - Short-Term Investments
-   <img src="img/image8.png" alt="drawing" width="650"/>
-   
+  
 
 
 <!-- CONTACT -->
