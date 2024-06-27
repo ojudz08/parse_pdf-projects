@@ -1,0 +1,7 @@
+RectSearch:
+  top: Sale Date
+  left: Sale Date
+  bot:
+    - For more details
+    - BDO Unibank, Inc. is regulated by
+  right: Amount

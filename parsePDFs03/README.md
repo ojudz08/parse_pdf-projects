@@ -92,7 +92,7 @@ This needs to be configured for the tabula-py to work in your system.
 
 ___
 
-### What are the pre-requisites?
+### Installation
 
 ```Python version 3.11.9```
 
