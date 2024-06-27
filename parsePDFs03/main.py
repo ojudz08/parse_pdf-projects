@@ -147,4 +147,4 @@ if __name__ == '__main__':
     bnk = "BDO"
 
     result = bank_estatement().transactions(bnk)    
-    print(result)    
+    print(result) 
